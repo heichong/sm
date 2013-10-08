@@ -124,7 +124,7 @@ public class ProductController {
 		for(Product product : products){
 			productService.saveProduct(product) ;
 		}
-
+		
 		//结束时间
 		long end = System.currentTimeMillis() ;
 		//花费时间-秒
