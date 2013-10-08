@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd 
+        http://www.springframework.org/schema/aop  
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+       	http://www.springframework.org/schema/tx  
+       	http://www.springframework.org/schema/tx/spring-tx.xsd  
+	">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+		
+		
+	<!-- 扫描所有service类，这里扫描 -->
+	<context:component-scan base-package="com.zongb.sm.service.imp"/>
+	<!-- 支持注解方式 @AspectJ 风格的切面  使用cglib而不是jdk的来生成代理方法
+	-->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	<!-- 引入jdbc配置文件 -->  
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!-- 数据库连接池 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        
+        <!-- Connection Pooling DBCP -->
+        <!-- 连接池初始化时的初始连接数 -->
+        <property name="initialSize" value="${jdbc.initialSize}" />
+        <!-- 最大连接数据库连接数，设置为0时，表示没有限制 -->
+        <property name="maxActive" value="${jdbc.maxActive}" />
+        <!-- 最大等待连接中的数量，设置为0时，表示没有限制 -->
+        <property name="maxIdle" value="${jdbc.maxIdle}" />
+        <!-- 最大等待秒数，单位为毫秒， 超过时间会报出错误信息 -->
+        <property name="maxWait" value="${jdbc.maxWait}" />
+        <property name="poolPreparedStatements" value="${jdbc.poolPreparedStatements}" />
+        <!-- 是否自动提交 -->
+        <property name="defaultAutoCommit" value="${jdbc.defaultAutoCommit}" />
+    </bean>
+    
+ 	<!-- 创建SqlSessionFactory，同时指定数据源-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- 指定sqlMapConfig总配置文件，订制的environment在spring容器中不在生效-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!--指定实体类映射文件，可以指定同时指定某一包以及子包下面的所有配置文件,如果xml文件和maper类在同一个文件夹下并同名，则不需要配置 
+  		<property  name="mapperLocations"  value="classpath*:com/xxt/ibatis/dbcp/**/*.xml"/>
+  		-->  
+    </bean>
+    <!-- 
+    	它 将 会 查 找 类 路 径 下 的 映 射 器(接口及接口类同名的xml文件) 并 自 动 将 它 们 创 建 成 MapperFactoryBean
+    	,MapperFactoryBean可以为接口生成代理实现类
+     -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    	<!-- 包路径 -->
+        <property name="basePackage" value="com.zongb.sm.dao" />
+    	<!-- 放弃sqlSessionFactory的自动装载，改为手动装载；
+    		因为自动装载会导致context:property-placeholder无效 -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <!-- 可选属性，接口标示，如果不指定此属性，则会自动扫描包路径下的所有接口 
+        <property name="markerInterface" value="com.zongb.sm.dao.SqlMapper"/>
+        -->
+        <!-- 可选属性，注释标示，扫描包含Repository的注释接口 -->
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    </bean>
+    
+    <!-- 这里的dataSource要与sqlSessionFactory的dataSource一致，否则事务无效 -->
+    <bean id="transactionManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    
+    <!--通过注解事物标识，来代理被@Transactional注释的方法，以增加对事物的控制 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+   
+</beans>

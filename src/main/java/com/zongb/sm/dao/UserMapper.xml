@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace和定义的Mapper接口对应，并实现其中的方法 -->
+<mapper namespace="com.zongb.sm.dao.UserMapper">
+
+	<resultMap type="com.zongb.sm.entity.User" id="userResultMap">    
+        <id property="id" column="id"/>    
+        <result property="name" column="name"/>  
+        <result property="pass" column="pass"/>    
+        <result property="age" column="age"/>     
+    </resultMap> 
+
+    <!-- id和mapper接口中的方法名对应，resultType使用mybatis.xml中的别名 -->
+    <select id="getAllUser" resultType="com.zongb.sm.entity.User">
+        <![CDATA[
+            select * from puser
+        ]]>
+    </select>
+    
+    <select id="getUserById" parameterType="String" resultMap="userResultMap">
+        <![CDATA[
+            select * from puser where id = #{id}
+        ]]>
+    </select>
+    <!-- 删除 -->  
+    <select id="deleteUserById" parameterType="String" resultMap="userResultMap">
+        <![CDATA[
+            delete from puser where id = #{id}
+        ]]>
+    </select>
+    <!-- 更新 -->  
+    <select id="updateUser" parameterType="com.zongb.sm.entity.User" resultMap="userResultMap">
+        <![CDATA[
+            update puser 
+	            set name=#{name}
+	            ,pass=#{pass}
+	            ,age=#{age}
+             where id = #{id}
+        ]]>
+    </select>
+    <!-- 插入 -->  
+    <insert id="saveUser" parameterType="com.zongb.sm.entity.User">  
+        insert into puser(id,name,pass,age)
+         values (#{id},#{name},#{pass},#{age});  
+    </insert>  
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace和定义的Mapper接口对应，并实现其中的方法 -->
+<mapper namespace="com.zongb.sm.dao.ProductMapper">
+
+	
+    <!-- 获取此类商品的最大编号modeid-->  
+    <select id="getMaxModeByType"  resultType="String" >
+        <![CDATA[
+            select max(model) model from oc_product where model like ${modelPre}
+        ]]>
+    </select>
+    
+    <!-- 插入 产品表-->  
+    <insert id="saveProduct" parameterType="com.zongb.sm.entity.Product" useGeneratedKeys="true" keyProperty="productId">  
+    <![CDATA[
+       INSERT INTO oc_product (model, sku, upc, ean, jan, isbn, mpn, location, quantity, stock_status_id, image, manufacturer_id, shipping, price, points, tax_class_id, date_available, weight, weight_class_id, length, width, height, length_class_id, subtract, minimum, sort_order, status, date_added, date_modified, viewed)
+		VALUES (
+			#{ model}
+			,#{ sku}
+			,#{ upc}
+			,#{ ean}
+			,#{ jan}
+			,#{ isbn}
+			,#{ mpn}
+			,#{ location}
+			,#{ quantity}
+			,#{ stockStatusId}
+			,#{ image}
+			,#{ manufacturerId}
+			,#{ shipping}
+			,#{ price}
+			,#{ points}
+			,#{ taxClassId}
+			,#{ dateAvailable}
+			,#{ weight}
+			,#{ weightClassId}
+			,#{ length}
+			,#{ width}
+			,#{ height}
+			,#{ lengthClassId}
+			,#{ subtract}
+			,#{ minimum}
+			,#{ sortOrder}
+			,#{ status}
+			,#{ dateAdded}
+			,#{ dateModified}
+			,#{ viewed}
+		)
+        ]]>
+
+    </insert>  
+    
+    
+    
+    <!-- 插入 产品描述表 -->  
+    <insert id="saveProductDesc" parameterType="com.zongb.sm.entity.ProductDesc" >  
+    	<![CDATA[
+    	INSERT INTO oc_product_description (product_id, language_id, name, description, meta_description, meta_keyword, tag)
+		VALUES (
+			#{productId}
+			,#{ languageId}
+			,#{ name}
+			,#{ description}
+			,#{ metaDescription}
+			,#{ metaKeyword}
+			,#{ tag}
+		)
+        ]]>
+    </insert> 
+    
+    <!-- 插入 产品图片表 -->  
+    <insert id="saveProductImage" parameterType="com.zongb.sm.entity.ProductImage" >  
+    	<![CDATA[
+    	INSERT INTO oc_product_image (product_id, image, sort_order)
+		VALUES (
+			#{productId}
+			,#{ image}
+			,#{ sortOrder}
+		)
+        ]]>
+    </insert> 
+    
+    <!-- 插入 产品目录表 -->  
+    <insert id="saveProductCategory" parameterType="com.zongb.sm.entity.ProductCategory" >  
+    	<![CDATA[
+    	INSERT INTO oc_product_to_category (product_id, category_id)
+		VALUES (
+			#{productId}
+			,#{ categoryId}
+		)
+        ]]>
+    </insert> 
+    
+    <!-- 插入 产品商店表 -->  
+    <insert id="saveProductStore" parameterType="com.zongb.sm.entity.Product" >  
+    	<![CDATA[
+    	INSERT INTO oc_product_to_store (product_id, store_id)
+		VALUES (
+			#{productId}
+			,#{ storeId}
+		)
+        ]]>
+    </insert> 
+    
+</mapper>
