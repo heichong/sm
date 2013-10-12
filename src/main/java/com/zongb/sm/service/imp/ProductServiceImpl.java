@@ -42,12 +42,14 @@ public class ProductServiceImpl implements ProductService {
 		System.out.println("插入产品描述信息成功！");
 		
 		List<ProductImage> imageList = product.getImageList() ;
-		for(ProductImage image: imageList){
-			image.setProductId(product.getProductId());
-			int j = productMapper.saveProductImage(image) ;
-			
+		if(imageList != null){
+			for(ProductImage image: imageList){
+				image.setProductId(product.getProductId());
+				int j = productMapper.saveProductImage(image) ;
+				
+			}
+			System.out.println("插入产品图片成功！");
 		}
-		System.out.println("插入产品图片成功！");
 		
 		List<ProductCategory> categoryList = product.getCategoryList() ;
 		for(ProductCategory category: categoryList){

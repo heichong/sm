@@ -28,6 +28,10 @@ public class OcParameter {
 
 	private Integer storeId ;//商店id
 
+	private Boolean isDownloadImage = false ;//是否下载产品图片
+	private Boolean onlyGetCurrentPage = false ;//是否只抽取当前页面的产品
+	
+	
 	/**
 	 * 常用计量单位名称与opencart系统中计量单位id的对应关系
 	 */
@@ -47,6 +51,18 @@ public class OcParameter {
 	}
 	
 	
+	public Boolean getOnlyGetCurrentPage() {
+		return onlyGetCurrentPage;
+	}
+	public void setOnlyGetCurrentPage(Boolean onlyGetCurrentPage) {
+		this.onlyGetCurrentPage = onlyGetCurrentPage;
+	}
+	public Boolean getIsDownloadImage() {
+		return isDownloadImage;
+	}
+	public void setIsDownloadImage(Boolean isDownloadImage) {
+		this.isDownloadImage = isDownloadImage;
+	}
 	public String getStyle() {
 		return style;
 	}

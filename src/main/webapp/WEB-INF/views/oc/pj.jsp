@@ -16,9 +16,6 @@
 		*{
 			
 		}
-		td{
-			border:1px solid ;
-		}
 		td input{
 			width:350px;
 		}
@@ -45,7 +42,7 @@
 				  + "	<div style=\"word-wrap: break-word; font-family: arial;\"><span style=\"line-height: 30px; font-size: 20px;\">Return Policy:</span>&nbsp;If you feel not satisfied with the items you received from us, and the item is different from description. Please let us know. Full refund, exchange or replacement is offered. Just if in need, please return the item to us within 3 days after you receive it. Please contact us for the detailed return &amp; exchange instruction. We are not responsible for the loss due to the lack of communication.</div> " 
 				  + "	<div style=\"word-wrap: break-word; font-family: arial;\">&nbsp;</div> " 
 				  + "	</div> " ;
-			$("#otherHtml").text(otherHtml);
+			//$("#otherHtml").text(otherHtml);
 			
 			//抽取产品
 			$("#save").click(function(){
@@ -110,7 +107,11 @@
 	<input type="button" name="save" id="save" value="开始抽取产品"/>
 	<img id="loading" style="display:none;" src="${root }/resources/images/loading.gif">
 	<br/>
-	<span>程序会抽取当前页面中显示的所有分页页面中的所有产品</span>
+	
+	<span><label><input type="checkbox" value="true" name="isDownloadImage" checked/>下载产品图片</label></span>
+	<br/>
+	<span><label><input type="checkbox" value="true" name="onlyGetCurrentPage" />只抽取当前页面的产品</label></span>
+	<span style="font-size:12px;">（默认抽取当前网页后的所有分页页面中的所有产品）</span>
 </div>
 <table>
   <tr>
@@ -129,7 +130,7 @@
     <td>opencart的image的全路径<br/>路径截止到data文件夹</td>
     <td><input type="text" name="imageDataPath" value="E:\workLesson\setup\xampp\htdocs\opencart\image\data"/></td>
     <td>opencart的image的全路径下的目录名<br/>data文件夹的目录名称</td>
-    <td><input type="text" name="imageDirName" value="nimibus"/></td>
+    <td><input type="text" name="imageDirName" value="pj"/></td>
   </tr>
   <tr>
     <td>商品所属的品牌id<br/>参考[商品->链接->品牌]</td>
@@ -157,7 +158,15 @@
   </tr>
 </table>
 其他产品描述：<br/>
-<div><textarea name="otherHtml" id="otherHtml" style="width:100%;height:200px;"></textarea></div>
+<div><textarea name="otherHtml" id="otherHtml" style="width:100%;height:200px;">
+<div class="clearfix" id="custom-description" style="color: rgb(0, 0, 0); font-size: 11.8px; word-wrap: break-word; padding: 15px 0px; width: 710px; overflow: hidden; line-height: 1.5; font-family: verdana; background-position: 0px 0px; background-repeat: repeat no-repeat;"> 
+<h2 class="description" style="font-weight: 700; color: rgb(51, 51, 51); font-size: 16px; margin: 0px; padding: 0px 10px 10px; font-family: Arial;">&nbsp;</h2> 
+<p style="margin: 0px; padding: 0px; word-wrap: break-word; font-family: arial;"><span style="line-height: 18px; color: rgb(112, 48, 160);"><span style="line-height: 30px; font-size: 20px;">Welcome to our great store! You &nbsp;will love here once you come as our goods and service are great!</span></span></p> 
+<div style="word-wrap: break-word; font-family: arial;">&nbsp;</div>
+<div style="word-wrap: break-word; font-family: arial;"><span style="line-height: 30px; font-size: 20px;">Special offer:&nbsp;</span>Kindly please give us your good Feedback &amp; Reward If you are satisfied with the item and our service. Please do not hesitate to give us a positive feedback with 5 stars. 5% discount will be offered for your new order then. Please help remind us when you place new order, thank you</div> 
+<div style="word-wrap: break-word; font-family: arial;"><span style="line-height: 30px; font-size: 20px;">Return Policy:</span>&nbsp;If you feel not satisfied with the items you received from us, and the item is different from description. Please let us know. Full refund, exchange or replacement is offered. Just if in need, please return the item to us within 3 days after you receive it. Please contact us for the detailed return &amp; exchange instruction. We are not responsible for the loss due to the lack of communication.</div>
+<div style="word-wrap: break-word; font-family: arial;">&nbsp;</div>
+</div></textarea></div>
 
 </form:form>
 

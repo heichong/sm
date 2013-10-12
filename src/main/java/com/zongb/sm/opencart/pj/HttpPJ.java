@@ -60,6 +60,9 @@ public class HttpPJ {
 	 * @return
 	 */
 	protected String getNextPage(Document doc){
+		if(param.getOnlyGetCurrentPage()){//只抽取当前页面
+			return null ;
+		}
 		//获取当前位置
 		Element current = doc.select("#pagediv .pagelist b").first() ;
 		if(current == null ){
@@ -125,7 +128,9 @@ public class HttpPJ {
 		
 		//3.下载所有的产品图片
 		//System.out.println("产品图片[start]");
-		getImages(doc,p) ;
+		if(param.getIsDownloadImage()){
+			getImages(doc,p) ;
+		}
 		//System.out.println("产品图片结束[end]");
 		//4.获取产品目录
 		p.setCategoryList(getCategorys());
