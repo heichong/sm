@@ -14,19 +14,15 @@ import org.jsoup.select.Elements;
 import com.zongb.sm.entity.Desc;
 import com.zongb.sm.entity.OcParameter;
 import com.zongb.sm.entity.Product;
-import com.zongb.sm.entity.ProductCategory;
 import com.zongb.sm.entity.ProductDesc;
 import com.zongb.sm.entity.ProductImage;
+import com.zongb.sm.opencart.AbstractHttp;
 import com.zongb.sm.opencart.Helper;
 import com.zongb.sm.opencart.HttpGetImage;
 
-public class Http {
-	private int SEQ_COUNT = 1;
+public class HttpNIMI extends AbstractHttp{
 	
-	private int count = 0 ;
-	
-	private OcParameter param ;
-	
+		
 	/**
 	 * 根据某一个分页页面的url，循环其后面的所有分页
 	 * @param urlPath
@@ -60,6 +56,9 @@ public class Http {
 	 * @return
 	 */
 	protected String getNextPage(Document doc){
+		if(param.getOnlyGetCurrentPage()){//只抽取当前页面
+			return null ;
+		}
 		Element current = doc.select(".pagination a.current").first() ;
 		if(current == null ){
 			return null ;
@@ -106,37 +105,11 @@ public class Http {
 		return pageProductList ;
 	}
 	/**
-	 * 解析当前html文档对象内的所有产品信息
-	 * @param doc html文档对象
-	 * @throws Exception
-	 */
-	public Product getProductAllInfo(Document doc,String href) throws Exception {
-		//1.获取产品的主要信息
-		//System.out.println("产品主要信息[start]");
-		Product p = getProduct(doc) ;
-		p.setOriginalUrl(href);
-		//System.out.println("产品主要信息[end]");
-		//2.获取产品相关描述信息
-		//System.out.println("产品相关描述[start]");
-		getProductDesc(doc,p) ;
-		//System.out.println("产品相关描述[end]");
-		
-		//3.下载所有的产品图片
-		//System.out.println("产品图片[start]");
-		getImages(doc,p) ;
-		//System.out.println("产品图片结束[end]");
-		//4.获取产品目录
-		p.setCategoryList(getCategorys());
-		
-		return p ;
-	}
-	
-	/**
 	 * 解析当前html文档对象,获取产品的主要信息
 	 * @param doc html文档对象
 	 * @throws Exception
 	 */
-	private Product getProduct(Document doc) throws Exception {
+	protected Product getProduct(Document doc) throws Exception {
 		
 		Product product = new Product() ;
 		//组成产品描述字符串
@@ -284,7 +257,7 @@ public class Http {
 	 * @param doc html文档对象
 	 * @throws Exception
 	 */
-	private void getProductDesc(Document doc,Product product) throws Exception {
+	protected void getProductDesc(Document doc,Product product) throws Exception {
 		//-------------------英文描述--------START------------------------------
 		ProductDesc desc = new ProductDesc() ;
 
@@ -329,7 +302,7 @@ public class Http {
 	 * @param doc html文档对象
 	 * @throws Exception
 	 */
-	private void getImages(Document doc,Product product) throws Exception {
+	protected void getImages(Document doc,Product product) throws Exception {
 		//查找到页面中所有产品的缩略图的url
 		Elements simgLinks = doc.select("#dt-tab img");
 		if(null == simgLinks){
@@ -380,29 +353,6 @@ public class Http {
 	}
 
 
-	/**
-	 * 根据页面传递的目录id参数，组成当前产品对应的目录对象列表
-	 * 一个产品可以位于多个目录
-	 * @param doc html文档对象
-	 * @throws Exception
-	 */
-	private List<ProductCategory> getCategorys() throws Exception {
-		
-		List<ProductCategory> categoryList = new ArrayList<ProductCategory>();
-		//用户传递的目录id以逗号进行分割
-		String [] categorys = param.getCategorys().split(",") ;
-		for(int i=0,len=categorys.length ; i<len ; i++){
-			if("".equals(categorys[i])){//目录id不能为空
-				continue ;
-			}
-			int categoryId = Integer.valueOf(categorys[i]).intValue() ;
-			ProductCategory pc = new ProductCategory() ;
-			pc.setCategoryId(categoryId) ;
-			categoryList.add(pc) ;
-		}
-		return categoryList ;
-		
-	}
 
 	public static void main(String[] args) {
 		try {
@@ -412,7 +362,7 @@ public class Http {
 			Document doc = Jsoup.connect(urlPath).timeout(1000000).get();
 			//Element div = doc.select("#de-description-detail span:matches(材\\s?质)").first() ;
 			//System.out.println(div.html());
-			Http http = new Http() ;
+			HttpNIMI http = new HttpNIMI() ;
 			
 			System.out.println(http.getNextPage(doc));
 			//Product product = getProductAllInfo(doc) ;

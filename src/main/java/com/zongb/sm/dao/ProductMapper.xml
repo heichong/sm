@@ -104,4 +104,79 @@
         ]]>
     </insert> 
     
+    
+    <!-- 获取此类商品的语言id -->  
+    <select id="getLanguageIdByCode"  resultType="String" >
+        <![CDATA[
+            select language_id from oc_language where code = #{code}
+        ]]>
+    </select>
+    
+    <!-- 获取所有的品牌信息 -->  
+    <select id="getAllManufacturer"  resultType="hashmap" >
+        <![CDATA[
+            select manufacturer_id mid,name mname from oc_manufacturer
+        ]]>
+    </select>
+    
+    
+    <!-- 获取所有的产品目录信息 -->  
+    <select id="getAllCategory"  resultType="hashmap" >
+        <![CDATA[
+            
+			SELECT 
+				a.category_id cid
+				,b.name cname
+			FROM oc_category a
+			LEFT JOIN oc_category_description b ON a.category_id = b.category_id
+			LEFT JOIN oc_language c ON b.language_id = c.language_id
+			WHERE c.code = 'cn'
+			AND a.parent_id = '0'
+			
+			UNION 
+			
+			SELECT 
+				a.category_id cid
+				,concat(b1.name, ' => ' , b.name ) cname
+			FROM oc_category a
+			LEFT JOIN oc_category_description b ON a.category_id = b.category_id
+			LEFT JOIN oc_language d ON b.language_id = d.language_id 
+			
+			LEFT JOIN oc_category a1 ON a.parent_id = a1.category_id
+			LEFT JOIN oc_category_description b1 ON a1.category_id = b1.category_id
+			LEFT JOIN oc_language c ON b1.language_id = c.language_id
+			
+			WHERE  c.code = d.code
+			AND c.code = 'cn'
+			AND a.parent_id <> 0 
+			AND a1.parent_id = 0
+			
+			UNION 
+			
+			
+			SELECT 
+				a.category_id cid
+				,concat(b2.name, ' => ' ,b1.name, ' => ' , b.name ) cname
+			FROM oc_category a
+			LEFT JOIN oc_category_description b ON a.category_id = b.category_id
+			LEFT JOIN oc_language c ON b.language_id = c.language_id 
+			
+			LEFT JOIN oc_category a1 ON a.parent_id = a1.category_id
+			LEFT JOIN oc_category_description b1 ON a1.category_id = b1.category_id
+			LEFT JOIN oc_language c1 ON b1.language_id = c1.language_id
+			
+			LEFT JOIN oc_category a2 ON a1.parent_id = a2.category_id
+			LEFT JOIN oc_category_description b2 ON a2.category_id = b2.category_id
+			LEFT JOIN oc_language c2 ON b2.language_id = c2.language_id
+			
+			WHERE  c.code = c1.code
+			AND c.code = c2.code
+			AND c.code = 'cn'
+			AND a.parent_id <> 0 
+			AND a1.parent_id <> 0
+			
+			ORDER BY cname
+        ]]>
+    </select>
+    
 </mapper>

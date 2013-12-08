@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zongb.sm.entity.OcParameter;
 import com.zongb.sm.entity.Product;
+import com.zongb.sm.opencart.AbstractHttp;
 import com.zongb.sm.opencart.Helper;
-import com.zongb.sm.opencart.nimi.Http;
+import com.zongb.sm.opencart.nimi.HttpNIMI;
 import com.zongb.sm.opencart.pj.HttpPJ;
 import com.zongb.sm.service.ProductService;
 
@@ -27,8 +28,13 @@ public class ProductController {
 
 	@RequestMapping(value="/nimibus")
 	public String nimibusInit(Model model) throws Exception {
-		
-		model.addAttribute("param", new OcParameter()) ;
+		OcParameter oc = new OcParameter() ;
+		List list = productService.getAllManufacturer(); 
+		oc.setLanguageEn(Integer.valueOf(productService.getLanguageIdByCode("en")));
+		oc.setLanguageCn(Integer.valueOf(productService.getLanguageIdByCode("cn")));
+		model.addAttribute("param", oc) ;
+		model.addAttribute("manuList", productService.getAllManufacturer()) ;//所有品牌列表
+		model.addAttribute("categoryList", productService.getAllCategory()) ;//所有产品目录列表
 		
 		return "oc/nimibus" ;
 	}
@@ -55,13 +61,13 @@ public class ProductController {
 		}
 
 		System.out.println("=========此产品已存在的最大编号为："+param.getProductSeqStart());
-		Http http = new Http() ;
+		AbstractHttp http = new HttpNIMI() ;
 		//开始时间
 		long start = System.currentTimeMillis() ;
 		List<Product>  products = http.getPagesProductList(param) ;
 		
 		//输出错误日志
-		int errorCount = Helper.writeErrorLog(products);
+		List<Map<String,String>> errorList =  Helper.getErrorList(products);
 		
 		System.out.println("----------开始插入数据库---------------");
 		for(Product product : products){
@@ -77,7 +83,8 @@ public class ProductController {
 		map.put("success", true) ;
 		map.put("count", products.size()) ;
 		map.put("time", time) ;
-		map.put("errorCount", errorCount) ;
+		map.put("errorList", errorList) ;
+		map.put("errorCount", errorList.size()) ;
 				
 		return map ;
 	}
@@ -112,7 +119,7 @@ public class ProductController {
 		}
 
 		System.out.println("=========此产品已存在的最大编号为："+param.getProductSeqStart()+",最大model为："+maxModel);
-		HttpPJ http = new HttpPJ() ;
+		AbstractHttp http = new HttpPJ() ;
 		//开始时间
 		long start = System.currentTimeMillis() ;
 		List<Product>  products = http.getPagesProductList(param) ;

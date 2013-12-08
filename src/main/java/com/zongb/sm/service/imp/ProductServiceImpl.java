@@ -65,8 +65,30 @@ public class ProductServiceImpl implements ProductService {
 	 * 获取此类商品的最大编号modeid
 	 * @param modelPre 商品编号的前缀 【日期+商品类型编码】
 	 */
+	@Transactional(readOnly = true)  
 	public String getMaxModeByType(String modelPre){
 		return productMapper.getMaxModeByType(modelPre) ;
 	}
 
+	/**
+	 * 获取此类商品的语言id
+	 */
+	@Transactional(readOnly = true)  
+	public String getLanguageIdByCode(String code){
+		return productMapper.getLanguageIdByCode(code) ;
+	}
+	/**
+	 * 获取所有的品牌信息
+	 */
+	@Transactional(readOnly = true)  
+	public List<Map<String,Object>> getAllManufacturer(){
+		return productMapper.getAllManufacturer() ;
+	}
+	/**
+	 * 获取所有的产品目录信息
+	 */
+	@Transactional(readOnly = true)  
+	public List<Map<String,Object>> getAllCategory(){
+		return productMapper.getAllCategory() ;
+	}
 }

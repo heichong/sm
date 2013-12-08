@@ -19,14 +19,14 @@ public class OcParameter {
 	private float productPriceTime ;//商品价格与实际价格的倍数
 	private String desItemType ;//商品描述的Item Type
 	private String descTags ;//商品描述的默认tag标签
-	private String categorys ;//所属目录id
+	private String [] categorys ;//所属目录id
 	
 	private String style ;//其他描述html
 	private String braceletType ;//其他描述html
 	
 	private String otherHtml ;//其他描述html
 
-	private Integer storeId ;//商店id
+	private Integer storeId = 0 ;//商店id
 
 	private Boolean isDownloadImage = false ;//是否下载产品图片
 	private Boolean onlyGetCurrentPage = false ;//是否只抽取当前页面的产品
@@ -165,10 +165,10 @@ public class OcParameter {
 	public void setDescTags(String descTags) {
 		this.descTags = descTags;
 	}
-	public String getCategorys() {
+	public String[] getCategorys() {
 		return categorys;
 	}
-	public void setCategorys(String categorys) {
+	public void setCategorys(String[] categorys) {
 		this.categorys = categorys;
 	}
 	

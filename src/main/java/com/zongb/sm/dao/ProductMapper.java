@@ -1,5 +1,8 @@
 package com.zongb.sm.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -50,4 +53,23 @@ public interface ProductMapper {
 	 * @param product
 	 */
 	public int saveProductStore(Product product);
+	
+
+	/**
+	 * 获取此类商品的语言id
+	 * @param code 语言的code
+	 */
+	public String getLanguageIdByCode(@Param("code") String code);
+
+
+	/**
+	 * 获取所有的品牌信息
+	 */
+	public List<Map<String,Object>> getAllManufacturer();
+
+	/**
+	 * 获取所有的产品目录信息
+	 */
+	public List<Map<String,Object>> getAllCategory();
+	
 }
