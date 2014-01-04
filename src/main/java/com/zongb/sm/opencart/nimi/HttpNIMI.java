@@ -204,8 +204,6 @@ public class HttpNIMI extends AbstractHttp{
 		d.setOtherHtml(param.getOtherHtml());
 		d.setItemType(param.getDesItemType());
 		d.setModelNumber(modelCode);
-		d.setLength(length+"CM");
-		d.setDiameter(diameter+"CM");
 		
 		String size = ("Length["+length+"CM]  ")
 				+ ("Width["+width+"CM]  ")
@@ -321,14 +319,15 @@ public class HttpNIMI extends AbstractHttp{
 			//图片的后缀名
 			String prefix = url.substring(url.lastIndexOf(".")) ;
 			//图片的新名称
-			String name = System.currentTimeMillis() + prefix ;
+			String name = product.getModel() + "_" + System.currentTimeMillis() + prefix ;
 			
 			String pdir = param.getImageDataPath() ;
 			if(!pdir.endsWith("\\") && !pdir.endsWith("/")){
 				pdir += "/" ;
 			}
-			
-			String path = pdir + param.getImageDirName() + "/" ;
+
+			//图片的路径
+			String path = pdir + Helper.getCurrentYearMonth() + "/"  ;
 			File dir = new File(path) ;
 			if(!dir.exists()){
 				dir.mkdirs() ;
@@ -342,7 +341,7 @@ public class HttpNIMI extends AbstractHttp{
 			
 			//保存图片信息
 			ProductImage image = new ProductImage() ;
-			image.setImage("data/" + param.getImageDirName() + "/" + name);
+			image.setImage("data/" + Helper.getCurrentYearMonth() + "/"+ name);
 			image.setSortOrder(i++);
 			imageList.add(image) ;
 		}

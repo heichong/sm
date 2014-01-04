@@ -11,7 +11,6 @@ public class OcParameter {
 	private int languageCn ;
 
 	private String imageDataPath ;//opencart的image的全路径<br/>路径截止到data文件夹
-	private String imageDirName ;//opencart的image的全路径下的目录名<br/>data文件夹的目录名称
 	private String productTypeCode ;//您为当前商品自定义的编码
 	private int productSeqStart = 1 ;//商品序列的初始值
 	private int brandId ;//商品所属的品牌id<br/>参考[商品->链接->品牌]
@@ -116,12 +115,6 @@ public class OcParameter {
 	}
 	public void setImageDataPath(String imageDataPath) {
 		this.imageDataPath = imageDataPath;
-	}
-	public String getImageDirName() {
-		return imageDirName;
-	}
-	public void setImageDirName(String imageDirName) {
-		this.imageDirName = imageDirName;
 	}
 	public String getProductTypeCode() {
 		return productTypeCode;

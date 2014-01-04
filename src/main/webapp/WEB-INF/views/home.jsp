@@ -15,6 +15,7 @@
 	<li><a href="<c:url value="/user/list" />">用户管理</a></li>
 	<li><a href="<c:url value="/product/nimibus" />">奇诺饰品</a></li>
 	<li><a href="<c:url value="/product/pj" />">平价饰品</a></li>
+	<li><a href="<c:url value="/product/ass" />">爱时尚淘宝数据csv导入</a></li>
 </ul>
 </body>
 </html>

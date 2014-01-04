@@ -2,6 +2,8 @@ package com.zongb.sm.opencart;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +26,56 @@ import com.zongb.sm.entity.Product;
 public class Helper {
 
 	/**
+	 * 根据原始价格生成新价格
+	 * @param oldPrice
+	 * @return
+	 */
+	public static double getNewPrice(double oldPrice){
+		
+		double newPrice = oldPrice ;
+		
+		if(oldPrice < 4){
+			newPrice = new BigDecimal(4 * oldPrice/6).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() ;
+		}else if(oldPrice < 10){
+			newPrice = new BigDecimal(3 * oldPrice/6).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() ;
+		}else{
+			newPrice = new BigDecimal(2 * oldPrice/6).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() ;
+		}
+		
+		return newPrice ;
+	}
+
+	/**
+	 * 获取进行encode后的url
+	 * @param orgUrl
+	 * @return
+	 */
+	public static String getEncodeUrl(String orgUrl){
+		String str;
+		try {
+			str = java.net.URLEncoder.encode(orgUrl,"UTF-8");
+			str = str.replaceAll("%2F","/");  
+			str = str.replaceAll("%3A",":");  
+			str = str.replaceAll("%3F","?"); 
+			str = str.replaceAll("%2C",","); 
+			str = str.replaceAll("\\+","%20");  
+			return str ;
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "" ;
+		}   
+	}
+	/**
+	 * 判断是否存在值，针对长宽高重量等。
+	 * @return
+	 */
+	public static boolean hasValue(Double d){
+		return d!=null && d.doubleValue() != 0d ;
+	}
+	
+	
+	/**
 	 * 获取当前日期，格式为：yyMMdd
 	 * @return
 	 */
@@ -31,9 +83,37 @@ public class Helper {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
 		return sdf.format(new Date()) ;
 	}
+	/**
+	 * 获取当前年份
+	 * @return
+	 */
+//	public static String getCurrentYear(){
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+//		return sdf.format(new Date()) ;
+//		
+//	}
+	/**
+	 * 获取当前年月
+	 * @return
+	 */
+	public static String getCurrentYearMonth(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		return sdf.format(new Date()) ;
+		
+	}
+	/**
+	 * 获取当前月份
+	 * @return
+	 */
+//	public static String getCurrentMonth(){
+//		SimpleDateFormat sdf = new SimpleDateFormat("MM");
+//		return sdf.format(new Date()) ;
+//		
+//	}
 	
 	/**
 	 * 从给定的字符串中，提取您需要的信息（根据提供的正则表达式字符串）
+	 * 如果匹配不了，则返回空字符串(非null)
 	 * @param regex
 	 * @param source
 	 * @return

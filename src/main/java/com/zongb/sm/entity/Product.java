@@ -38,6 +38,7 @@ public class Product {
 	private Double length ;//长度
 	private Double width ;//宽度
 	private Double height ;//高度
+	private Double diameter ;//直径
 	private Integer lengthClassId ;//长度单位id--参考系统管理-》本地化
 	private Integer subtract ;//减去库存？ 0-否；1-是
 	private Integer minimum ;//起订量
@@ -50,9 +51,9 @@ public class Product {
 	private String originalUrl ;//原始url
 	
 	//--------属性类--------------------
-	private List<ProductDesc> descList ;
-	private List<ProductImage> imageList ;
-	private List<ProductCategory> categoryList ;
+	private List<ProductDesc> descList ;//中文和英文描述
+	private List<ProductImage> imageList ;//图片列表
+	private List<ProductCategory> categoryList ;//产品所属的目录（多个）
 
 	//--------临时--------------------
 	private Desc desc ;
@@ -305,6 +306,12 @@ public class Product {
 	}
 	public void setViewed(Integer viewed) {
 		this.viewed = viewed;
+	}
+	public Double getDiameter() {
+		return diameter;
+	}
+	public void setDiameter(Double diameter) {
+		this.diameter = diameter;
 	}
 	
 	

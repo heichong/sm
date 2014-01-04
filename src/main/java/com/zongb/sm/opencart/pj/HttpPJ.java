@@ -187,9 +187,6 @@ public class HttpPJ  extends AbstractHttp{
 		d.setOtherHtml(param.getOtherHtml());
 		d.setItemType(param.getDesItemType());
 		d.setModelNumber(modelCode);
-		//长度与直径在描述中不显示
-		d.setLength(null);
-		d.setDiameter(null);
 		
 		e = doc.select("#selectm hr").first().nextElementSibling() ;
 		String size = e.text() ;
@@ -198,7 +195,8 @@ public class HttpPJ  extends AbstractHttp{
 			size = e.text() ;
 		}
 		if(size.indexOf("尺寸") <= 0){
-			size = e.nextElementSibling().text() ;
+			Element el = e.nextElementSibling() ;
+			size = (el==null?"":el.text()) ;			
 		}
 		size = Helper.getMatcher("尺寸：((.)+cm)", e.text(),1) ;
 		d.setSize(size);
@@ -218,7 +216,7 @@ public class HttpPJ  extends AbstractHttp{
 		product.setSortOrder(SEQ_COUNT);//排序号
 		product.setStatus(1);//0-停用 ；1-启用
 		product.setDateAdded(new Date());//添加时间
-		product.setDateModified(new Date());//点击量
+		product.setDateModified(new Date());//修改时间
 		product.setViewed(0);//点击量
 		
 		//临时保存组成的描述对象
@@ -303,8 +301,8 @@ public class HttpPJ  extends AbstractHttp{
 			if(!pdir.endsWith("\\") && !pdir.endsWith("/")){
 				pdir += "/" ;
 			}
-			
-			String path = pdir + param.getImageDirName() + "/" ;
+			//图片的路径
+			String path = pdir + Helper.getCurrentYearMonth() + "/"  ;
 			File dir = new File(path) ;
 			if(!dir.exists()){
 				dir.mkdirs() ;
@@ -318,7 +316,7 @@ public class HttpPJ  extends AbstractHttp{
 			
 			//保存图片信息
 			ProductImage image = new ProductImage() ;
-			image.setImage("data/" + param.getImageDirName() + "/" + name);
+			image.setImage("data/" + Helper.getCurrentYearMonth() + "/" + name);
 			image.setSortOrder(i++);
 			imageList.add(image) ;
 		}

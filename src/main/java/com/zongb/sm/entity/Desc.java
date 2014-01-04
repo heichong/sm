@@ -1,5 +1,9 @@
 package com.zongb.sm.entity;
 
+import java.text.MessageFormat;
+
+import com.zongb.sm.opencart.Helper;
+
 /**
  * 产品html描述组成类
  * @author zongb
@@ -7,6 +11,15 @@ package com.zongb.sm.entity;
  */
 public class Desc {
 
+	//长度标识
+	private static final String DESC_LENGTH = "length" ;
+	//宽度标识
+	private static final String DESC_WIDTH = "width" ;
+	//高度标识
+	private static final String DESC_HEIGHT = "height" ;
+	//直径标识
+	private static final String DESC_DIAMETER = "diameter" ;
+	
 	private String fashion ;
 	private String itemType ;
 	private String isCustomized ;
@@ -16,8 +29,6 @@ public class Desc {
 	private String gender ;
 	private String braceletType ;
 	private String brandName ;
-	private String length ;
-	private String diameter ;
 	private String shapeOrPattern ;
 	private String modelNumber ;
 	private String mainMaterial ;
@@ -32,7 +43,6 @@ public class Desc {
 		gender = "Unisex" ;
 		braceletType = "&nbsp;" ;
 		brandName = "Zz beads" ;
-		diameter = "&nbsp;" ;
 		shapeOrPattern = "&nbsp;" ;
 
 		mainMaterial = "&nbsp;" ;
@@ -53,12 +63,6 @@ public class Desc {
 		}
 		if(null != shapeOrPattern){
 			temp.append(wrapItemHtml("Shape/pattern:",this.shapeOrPattern)) ;
-		}
-		if(null != length){
-			temp.append(wrapItemHtml("Length:",this.length)) ;
-		}
-		if(null != diameter){
-			temp.append(wrapItemHtml("Diameter:",this.diameter)) ;
 		}
 		
 		if(null != fashion){
@@ -200,22 +204,6 @@ public class Desc {
 		this.brandName = brandName;
 	}
 
-	public String getLength() {
-		return length;
-	}
-
-	public void setLength(String length) {
-		this.length = length;
-	}
-
-	public String getDiameter() {
-		return diameter;
-	}
-
-	public void setDiameter(String diameter) {
-		this.diameter = diameter;
-	}
-
 	public String getShapeOrPattern() {
 		return shapeOrPattern;
 	}
@@ -239,7 +227,32 @@ public class Desc {
 	public void setMainMaterial(String mainMaterial) {
 		this.mainMaterial = mainMaterial;
 	}
+
+	/**
+	 * 通过产品的长宽高直径组合size
+	 * @param p
+	 */
+	public void setSize(Product p) {
+		// TODO Auto-generated method stub
+		String str = "" ;
+		if(Helper.hasValue(p.getLength())){
+			str += wrapValue(DESC_LENGTH,p.getLength()) ;
+		}
+		if(Helper.hasValue(p.getWidth())){
+			str += wrapValue(DESC_WIDTH,p.getWidth()) ;
+		}
+		if(Helper.hasValue(p.getHeight())){
+			str += wrapValue(DESC_HEIGHT,p.getHeight()) ;
+		}
+		if(Helper.hasValue(p.getDiameter())){
+			str += wrapValue(DESC_DIAMETER,p.getDiameter()) ;
+		}
+		
+		this.setSize(str);
+	}
 	
-	
+	private String wrapValue(String flag,Double d){
+		return MessageFormat.format("<span class=\"{0}\"><span class=\"k\">{0}</span><span class=\"v\">{1}</span></span>", flag,d.doubleValue()) ;
+	}
 	
 }

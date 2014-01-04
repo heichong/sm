@@ -11,6 +11,9 @@
 	<title>义乌市琦诺饰品有限公司</title>
 	
 	<style type="text/css">
+		.error{
+			margin:auto;
+		}
 		#errorBody{
 			color:red ;
 		}
@@ -82,7 +85,7 @@
 <p>公司：<a href="http://www.nimibus.cn/" target="_blank">义乌市琦诺饰品有限公司</a></p>
 <hr>
 <div class="error">
-<table>
+<table class="table-condensed">
 	<thead>
 		<tr>
 			<td>序号</td>
@@ -143,6 +146,12 @@
 	    <label for="urlPath" class="col-sm-4 control-label">opencart的image的全路径<p class="help-block">路径截止到data文件夹</p></label>
 	    <div class="col-sm-8">
 	      <input type="text" name="imageDataPath" value="E:\workLesson\setup\xampp\htdocs\opencart\image\data" class="form-control"/>
+	    </div>
+	</div>
+	<div class="form-group">
+	    <label for="minNumDiff" class="col-sm-4 control-label">产品自定义的类型代码</label>
+	    <div class="col-sm-8">
+	      <input type="text" id="productTypeCode" name="productTypeCode" value="07" class="form-control"/>
 	    </div>
 	</div>
 	<div class="form-group">

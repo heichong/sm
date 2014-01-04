@@ -8,7 +8,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>平价饰品网</title>
+	<title>爱时尚饰品网</title>
 	<style type="text/css">
 		.error{
 			margin:auto;
@@ -44,7 +44,7 @@
 			//抽取产品
 			$("#save").click(function(){
 				$.ajax({
-					url:"${root }/product/pj/save"
+					url:"${root }/product/ass/save"
 					,type:"post"
 					,dataType:"json"
 					,data:$("form:eq(0)").serialize()
@@ -81,7 +81,7 @@
 <body>
 
 <h3><a href="<c:url value="/" />">返回首页</a></h3>
-<p>公司：<a href="http://www.pjspw.com/" target="_blank">平价饰品网</a></p>
+<p>公司：<a href="http://www.ass007.com/" target="_blank">爱时尚饰品网</a></p>
 <hr>
 <div class="error">
 <table>
@@ -111,13 +111,13 @@
 	    </div>
 		
 	</div>
+	
 	<div class="form-group">
-	    <label for="urlPath" class="col-sm-4 control-label">抽取产品的网址</label>
+	    <label for="urlPath" class="col-sm-4 control-label">数据包的路径</label>
 	    <div class="col-sm-8">
 	      <input type="text" name="urlPath" id="urlPath" value="" class="form-control"/>
 	      <p class="help-block">
-	      		<label for="isDownloadImage"><input type="checkbox" value="true" id="isDownloadImage" name="isDownloadImage" checked/>抽取时下载产品图片</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	     		<label for="onlyGetCurrentPage"><input type="checkbox" value="true" id="onlyGetCurrentPage" name="onlyGetCurrentPage" />只抽取当前页面的产品</label>
+	      		<label for="isDownloadImage"><input type="checkbox" value="true" id="isDownloadImage" name="isDownloadImage" checked/>同时下载产品图片</label>
 	      </p>
 	    </div>
 	</div>
@@ -159,7 +159,6 @@
 	      <input type="text" id="minNumDiff" name="minNumDiff" value="3" class="form-control"/>
 	    </div>
 	</div>
-	
 	<div class="form-group">
 	    <label for="productPriceTime" class="col-sm-4 control-label">商品价格与实际价格的倍数</label>
 	    <div class="col-sm-8">
